@@ -2,13 +2,13 @@ package com.Automation.Steps;
 
 import org.openqa.selenium.WebDriver;
 
-import com.Automation.pages.BaseDriverPage;
-import com.Automation.pages.Checkoutpage;
-import com.Automation.pages.Homepage;
-import com.Automation.pages.Letstalkteapage;
-import com.Automation.pages.Menupage;
-import com.Automation.pages.Ourpassionpage;
-import com.Automation.pages.Welcomepage;
+import com.Automation.Pages.BaseDriverPage;
+import com.Automation.Pages.Checkoutpage;
+import com.Automation.Pages.Homepage;
+import com.Automation.Pages.Letstalkteapage;
+import com.Automation.Pages.Menupage;
+import com.Automation.Pages.Ourpassionpage;
+import com.Automation.Pages.Welcomepage;
 
 public class Mastersteps {
 

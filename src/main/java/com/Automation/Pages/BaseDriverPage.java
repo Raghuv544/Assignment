@@ -1,4 +1,4 @@
-package com.Automation.pages;
+package com.Automation.Pages;
 
 import java.net.MalformedURLException;
 import java.net.URL;

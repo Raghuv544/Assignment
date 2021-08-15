@@ -1,4 +1,4 @@
-package com.Automation.Runner;
+package com.Automation.Utilities;
 
 import org.junit.runner.RunWith;
 import io.cucumber.junit.*;
