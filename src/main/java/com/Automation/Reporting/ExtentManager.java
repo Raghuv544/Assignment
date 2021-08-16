@@ -42,8 +42,8 @@ public class ExtentManager {
     
     public static void setExtentReportName()
     {
-    	htmlReporter.config().setReportName("Sales Automation Management Test Results - "+AutomationCore.envName);
-    	htmlReporter.config().setDocumentTitle("Sales Automation Management Test Results - "+AutomationCore.envName);
+    	htmlReporter.config().setReportName("Automation Test Results - "+AutomationCore.envName);
+    	htmlReporter.config().setDocumentTitle("Automation Test Results - "+AutomationCore.envName);
     }
     
 }

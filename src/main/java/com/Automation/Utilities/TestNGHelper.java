@@ -1,13 +1,20 @@
 package com.Automation.Utilities;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.asserts.Assertion;
 import org.testng.asserts.SoftAssert;
+
+import com.Automation.Reporting.ExtentUtilities;
+import com.Automation.Steps.Mastersteps;
 
 public class TestNGHelper {
 	
@@ -23,7 +30,9 @@ public class TestNGHelper {
 		try
 		{
 			Assert.assertEquals(actual, expected);		
+			//Mastersteps ms= new Mastersteps();
 			logScreenshot(stepName, screenshotStatus);
+		//	logScreenshot(stepName, screenshotStatus);
 		}
 		catch(AssertionError error)
 		{
@@ -199,103 +208,78 @@ public class TestNGHelper {
 	}	*/
 	
 	public static void logScreenshot(String stepName, String screenshotStatus){		
-		Reporter.log("<br> Step Result: " +stepName+ " :Passed");
-		log.info("Step: " + stepName+ " passed");
+		AutomationCore core = new AutomationCore();
 		stepName = stepName.trim();
+		 String path = "";
 		if(screenshotStatus.equalsIgnoreCase("yes")){
 			log.info("Screenshot Status is yes and hence taking screenshot");
-			if(AutomationCore.appType.equalsIgnoreCase("Windows"))
-			{		
-				String seMinVal = AutoCore.formatDateAndTime(
-						AutoCore.getCurrentDateAndTime(), "mmss");
-			/*String path = AutoCore.Environment("screenShotsPath") + "\\"
-						+ AutoCore.Environment("projectName") + "\\"
-						+ AutomationCore.currentBrowser + "\\" + stepName
-						+ "Pass" + seMinVal + ".png";*/
-				String path = AutoCore.Environment("screenShotsPath") + "\\"
-					 + stepName	+ "Pass" + seMinVal + ".png";
-				System.out.println("Screenshot Path: "+path);
-				System.out.println(AutomationCore.psiWindowTitle);				
-				Reporter.log("<br> <a href=file:" + path + " target='blank'> <img src=" +path + " target='blank' height='300' width='500' /> </a></br>");
-				//ExtentUtilities.logScreenshotWithTitle(path, stepName);
-			}
-			else
-			{				
-				driver = SeleniumHelper.getDriver();
-				String seMinVal = AutoCore.formatDateAndTime(
-						AutoCore.getCurrentDateAndTime(), "mmss");
-						String imageName = stepName + "Pass" + seMinVal + ".png";
-				/*String path = AutoCore.Environment("screenShotsPath")
-					+ File.separator + AutoCore.Environment("projectName")
-					+ File.separator + AutomationCore.currentBrowser
-					+ File.separator + imageName;*/
-						String path = AutoCore.Environment("screenShotsPath") + "\\"
-								 + stepName	+ "Pass" + seMinVal + ".png";
-				System.out.println("Screenshot Path: "+path);
-				SeleniumHelper.takeSnapShot(driver, path);
-				Reporter.log("<br> <a href=file:" + path + " target='blank'> <img src=" +path + " target='blank' height='300' width='500' /> </a></br>");
 				
-				if(AutomationCore.platform.equalsIgnoreCase("local"))
-				{
-					System.out.println(System.getProperty("user.dir") + File.separator +path);
-					//ExtentUtilities.logScreenshotWithTitle( System.getProperty("user.dir") + File.separator +path, stepName);
-					log.info("Screenshot Attached to Extent Report");
+				//driver = SeleniumHelper.getDriver();
+				String seMinVal = core.formatDateAndTime(core.getCurrentDateAndTime(), "mmss");
+				 path = System.getProperty("user.dir") + File.separator+core.Environment("screenShotsPath") + "\\" + stepName+ "Pass" + seMinVal + ".png";
+
+				System.out.println(path);
+				Mastersteps ms = new Mastersteps();
+				System.out.println(ms.testdriver.getCurrentUrl()+" =======");
+				TakesScreenshot scrShot = ((TakesScreenshot) ms.testdriver);
+				File SrcFile = scrShot.getScreenshotAs(OutputType.FILE);
+				File DestFile = new File(path);
+				try {
+					FileUtils.copyFile(SrcFile, DestFile);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				else if(AutomationCore.platform.equalsIgnoreCase("sauce"))
+				//SeleniumHelper.takeSnapShot(ms.testdriver, path);
+				//Reporter.log("<br> <a href=file:" + path + " target='blank'> <img src=" +path + " target='blank' height='300' width='500' /> </a></br>");
+				//SeleniumHelper.takeSnapShot(driver, path);
+				if(core.Environment("executionenvironment").equalsIgnoreCase("Local"))
+				{
+					ExtentUtilities.logScreenshotWithTitle(path, stepName);
+					//ExtentUtilities.logScreenshotWithTitle(path, stepName);
+				}
+				else 
 				{					
-					String jenkinsPath = AutoCore.Environment("jenkinsScreenshotsPath")+imageName;
-					//ExtentUtilities.logScreenshotWithTitle(jenkinsPath, stepName);
+					//String jenkinsPath = AutoCore.Environment("jenkinsScreenshotsPath")+imageName;
+					ExtentUtilities.logScreenshotWithTitle("", stepName);
 				}				
 				
 			}
-		}
+		
 	}
 	
 	public static void logFailedScreenshot(String stepName, String screenshotStatus, String errorDetails){		
-		Reporter.log("<br> Step Result: " +stepName+ " :Failed");
-		log.info("Step: " + stepName+ " Failed");
+		AutomationCore core = new AutomationCore();
 		stepName = stepName.trim();
-		if(screenshotStatus.equalsIgnoreCase("yes")){
-			log.info("Screenshot Status is yes and hence taking screenshot");
-			if(AutomationCore.appType.equalsIgnoreCase("Windows"))
-			{		
-				String seMinVal = AutoCore.formatDateAndTime(
-						AutoCore.getCurrentDateAndTime(), "mmss");
-				String path = AutoCore.Environment("screenShotsPath") + "\\"
-						+ AutoCore.Environment("projectName") + "\\"
-						+ AutomationCore.currentBrowser + "\\" + stepName
-						+ "Pass" + seMinVal + ".png";
+		 String path = "";
+				String seMinVal = core.formatDateAndTime(core.getCurrentDateAndTime(), "mmss");
+				 path = System.getProperty("user.dir") + File.separator+core.Environment("screenShotsPath") + "\\" + stepName+ "Pass" + seMinVal + ".png";
+
 				System.out.println(path);
-				System.out.println(AutomationCore.psiWindowTitle);				
-				Reporter.log("<br> <a href=file:" + path + " target='blank'> <img src=" +path + " target='blank' height='300' width='500' /> </a></br>");
-				//ExtentUtilities.logScreenshotWithTitle(path, stepName);
-			}
-			else
-			{				
-				driver = SeleniumHelper.getDriver();
-				String seMinVal = AutoCore.formatDateAndTime(
-						AutoCore.getCurrentDateAndTime(), "mmss");
-						String imageName = stepName + "Pass" + seMinVal + ".png";
-				String path = AutoCore.Environment("screenShotsPath")
-					+ File.separator + AutoCore.Environment("projectName")
-					+ File.separator + AutomationCore.currentBrowser
-					+ File.separator + imageName;
-				System.out.println(path);
-				SeleniumHelper.takeSnapShot(driver, path);
-				Reporter.log("<br> <a href=file:" + path + " target='blank'> <img src=" +path + " target='blank' height='300' width='500' /> </a></br>");
-				
-				if(AutomationCore.platform.equalsIgnoreCase("local"))
-				{
-					//ExtentUtilities.logFailedScreenshotWithTitle(System.getProperty("user.dir") + File.separator +path, AutomationCore.currentStepName+" -Failed <br> Failure Reason: " +errorDetails.substring(errorDetails.indexOf(":")+1, errorDetails.length()));
+				Mastersteps ms = new Mastersteps();
+				System.out.println(ms.testdriver.getCurrentUrl()+" =======");
+				TakesScreenshot scrShot = ((TakesScreenshot) ms.testdriver);
+				File SrcFile = scrShot.getScreenshotAs(OutputType.FILE);
+				File DestFile = new File(path);
+				try {
+					FileUtils.copyFile(SrcFile, DestFile);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				else if(AutomationCore.platform.equalsIgnoreCase("sauce"))
+				//SeleniumHelper.takeSnapShot(ms.testdriver, path);
+				//Reporter.log("<br> <a href=file:" + path + " target='blank'> <img src=" +path + " target='blank' height='300' width='500' /> </a></br>");
+				//SeleniumHelper.takeSnapShot(driver, path);
+				if(core.Environment("executionenvironment").equalsIgnoreCase("Local"))
+				{
+					ExtentUtilities.logFailedScreenshotWithTitle(path, stepName);
+					//ExtentUtilities.logScreenshotWithTitle(path, stepName);
+				}
+				else 
 				{					
-					String jenkinsPath = AutoCore.Environment("jenkinsScreenshotsPath")+imageName;
-					//ExtentUtilities.logFailedScreenshotWithTitle(jenkinsPath, AutomationCore.currentStepName+" -Failed <br> Failure Reason: " +errorDetails.substring(errorDetails.indexOf(":")+1, errorDetails.length()));
+					ExtentUtilities.logFailedScreenshotWithTitle(path, stepName);
 				}				
 				
-			}
-		}
 	}
 	
 /*	public static void logFailedScreenshot(String stepName, String screenshotStatus, String errorDetails){		

@@ -1929,6 +1929,7 @@ public class SeleniumHelper {
 			FileUtils.copyFile(SrcFile, DestFile);
 		} catch (Exception e) {
 			// e.printStackTrace();
+			System.out.println("NOT captured Screenshot");
 			e.getMessage();
 		}
 
@@ -3480,6 +3481,11 @@ public class SeleniumHelper {
 	// }
 	// return null;
 	// }
+	
+	public static void waitForWebElementToBePresent(WebDriver driver, WebElement ele) {
+		WebDriverWait wait = new WebDriverWait(driver, 60);
+		wait.until(ExpectedConditions.visibilityOf(ele));
+	}
 
 	public static WebElement waitForAjaxElementToBePresent(WebDriver driver, By by, long timeOutInSeconds,
 			ExplicitConditions condition) {

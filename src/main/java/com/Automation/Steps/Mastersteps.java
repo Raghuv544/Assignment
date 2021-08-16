@@ -1,49 +1,74 @@
 package com.Automation.Steps;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.testng.Reporter;
 
 import com.Automation.Pages.BaseDriverPage;
-import com.Automation.Pages.Checkoutpage;
 import com.Automation.Pages.Homepage;
-import com.Automation.Pages.Letstalkteapage;
-import com.Automation.Pages.Menupage;
-import com.Automation.Pages.Ourpassionpage;
-import com.Automation.Pages.Welcomepage;
+import com.Automation.Reporting.ExtentUtilities;
+import com.Automation.Utilities.AutomationCore;
 
 public class Mastersteps {
 
-	public  WebDriver testdriver;
-	
+	public  static WebDriver testdriver;
+	public static String currentScenario = "";
 	public Homepage homepage =null;
-	public Checkoutpage checkoutpage =null;
-	public Letstalkteapage letstalkteapage=null;
-	public Menupage menupage=null;
-	public Ourpassionpage ourpassionpage=null;
-	public Welcomepage welcomepage=null;
+
+	public WebDriver startDriver() {
+		BaseDriverPage bpage = new BaseDriverPage();
+		return testdriver = bpage.setup();
+	}
 	
 	public void getHomepage() {
 		homepage =new Homepage(testdriver);
 		
 	}
-	public void getCheckoutpage() {
-		checkoutpage=new Checkoutpage(testdriver);
-	}
-	public void getLetstalkteapage() {
-		letstalkteapage=new Letstalkteapage(testdriver);
+	
+	public static void logScreenshot(String stepName, String screenshotStatus){		
+		Reporter.log("<br> Step Result: " +stepName+ " :Passed");
+		AutomationCore core = new AutomationCore();
+		stepName = stepName.trim();
+		 String path = "";
+		if(screenshotStatus.equalsIgnoreCase("yes")){
+				
+				//driver = SeleniumHelper.getDriver();
+				String seMinVal = core.formatDateAndTime(core.getCurrentDateAndTime(), "mmss");
+				 path = System.getProperty("user.dir") + File.separator+core.Environment("screenShotsPath") + "\\" + stepName+ "Pass" + seMinVal + ".png";
+
+				System.out.println(path);
+				Mastersteps ms = new Mastersteps();
+				System.out.println(testdriver.getCurrentUrl()+" =======");
+				TakesScreenshot scrShot = ((TakesScreenshot) ms.testdriver);
+				File SrcFile = scrShot.getScreenshotAs(OutputType.FILE);
+				File DestFile = new File(path);
+				try {
+					FileUtils.copyFile(SrcFile, DestFile);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				//SeleniumHelper.takeSnapShot(ms.testdriver, path);
+				//Reporter.log("<br> <a href=file:" + path + " target='blank'> <img src=" +path + " target='blank' height='300' width='500' /> </a></br>");
+				//SeleniumHelper.takeSnapShot(driver, path);
+				if(core.Environment("executionenvironment").equalsIgnoreCase("Local"))
+				{
+					ExtentUtilities.logScreenshotWithTitle(path, stepName);
+					//ExtentUtilities.logScreenshotWithTitle(path, stepName);
+				}
+				else 
+				{					
+					//String jenkinsPath = AutoCore.Environment("jenkinsScreenshotsPath")+imageName;
+					ExtentUtilities.logScreenshotWithTitle("", stepName);
+				}				
+				
+			}
 		
 	}
-	public void getMenupage() {
-		menupage=new Menupage(testdriver);
-	}
-	public void getOurpassionpage() {
-		ourpassionpage=new Ourpassionpage(testdriver);
-	}
-	public void getWelcomepage() {
-		welcomepage=new Welcomepage(testdriver);
-	}
 	
-	public void startDriver() {
-		BaseDriverPage bpage = new BaseDriverPage();
-		testdriver = bpage.setup();
-	}
 }

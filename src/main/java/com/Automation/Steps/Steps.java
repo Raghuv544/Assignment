@@ -1,68 +1,56 @@
 package com.Automation.Steps;
 
+import java.io.File;
+
+import com.Automation.Reporting.ExtentManager;
+import com.Automation.Reporting.ExtentUtilities;
+import com.Automation.Utilities.AutomationCore;
+
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class Steps extends Mastersteps{
 
+	public static Scenario scenario;
+	
 	@Before
-	public void setupp() {
+	public void setupp(Scenario scenario) {
+		currentScenario = scenario.getName().replace(" ", "");
+		System.out.println(System.getProperty("user.dir"));
+		AutomationCore core = new AutomationCore();
+		core.testFileAttachmentPath = System.getProperty("user.dir") + File.separator
+				+  core.Environment("testAttachmentFilePath");
+		System.out.println(AutomationCore.testFileAttachmentPath);
+
+		ExtentUtilities.initilaizeExtentReport();
+		ExtentManager.setExtentReportName();
+		ExtentUtilities.createParentTest(scenario.getName());
 		startDriver();
 		getHomepage();
-		getCheckoutpage();
-		getLetstalkteapage();
-		getMenupage();
-		getOurpassionpage();
-		getWelcomepage();
+	
 
 	}
 	
 	@After
 	public void closeDriver() {
+		ExtentUtilities.extentFlush();
 		testdriver.quit();
 	}
 	
 	
-	@Then("Verify CheckOut link navigation")
-	public void verify_check_out_link_navigation() {
-	  
-		homepage.homepage_checkout_click();
+	@Given("Add item {string} to the cart and checkout")
+	public void add_item_to_the_cart_and_checkout(String prodctItem) {
+	   homepage.CheckOutAnyItem(prodctItem);
 	}
-	@When("Enter CheckOut information")
-	public void enter_check_out_information() {
-	    checkoutpage.enter_customerinfo("abc@gmail.com", "xyz", "chennai");
-	    checkoutpage.enter_paymentdetails("Visa", "123455", "abc", "1234");
-	}
-	@Then("Submit the CheckOut")
-	public void submit_the_check_out() {
-		checkoutpage.click_placeorderbutton();
+	@Then("Verify the price the selected item")
+	public void verify_the_price_the_selected_item() {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new io.cucumber.java.PendingException();
 	}
 
-	@When("Enter CheckOut Customer information")
-	public void enter_check_out_customer_information() {
-		checkoutpage.enter_customerinfo("abc@gmail.com", "xyz", "chennai");
-	}
-	@When("Enter Checkout Payment information")
-	public void enter_checkout_payment_information() {
-		checkoutpage.enter_paymentdetails("Visa", "123455", "abc", "1234");
-		
-	}
-	
-	@When("Enter {string},{string},{string} CheckOut Customer information")
-	public void enter_check_out_customer_information(String email, String name, String address) {
-	   checkoutpage.enter_customerinfo(email, name, address);
-	}
-	
-	@When("Enter {string},{string},{string} CheckOutPage Customer information")
-	public void enter_check_out_page_customer_information(String email, String name, String address) {
-		checkoutpage.enter_customerinfo(email, name, address);
-	}
-	
-
-
-	
 
 }
