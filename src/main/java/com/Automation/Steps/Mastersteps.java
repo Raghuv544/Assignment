@@ -9,8 +9,12 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.testng.Reporter;
 
+import com.Automation.Pages.Add_user_page;
 import com.Automation.Pages.BaseDriverPage;
 import com.Automation.Pages.Homepage;
+import com.Automation.Pages.Login_page;
+import com.Automation.Pages.OrangeHRM_Home_page;
+import com.Automation.Pages.OrangeHRM_SystemUsers_page;
 import com.Automation.Reporting.ExtentUtilities;
 import com.Automation.Utilities.AutomationCore;
 
@@ -19,6 +23,10 @@ public class Mastersteps {
 	public  static WebDriver testdriver;
 	public static String currentScenario = "";
 	public Homepage homepage =null;
+	public Login_page loginpage=null;
+	public OrangeHRM_Home_page orangeHRMhomepage=null;
+	public OrangeHRM_SystemUsers_page orangeHRMSystemUsers_page=null;
+	public Add_user_page add_user_page=null;
 
 	public WebDriver startDriver() {
 		BaseDriverPage bpage = new BaseDriverPage();
@@ -28,6 +36,18 @@ public class Mastersteps {
 	public void getHomepage() {
 		homepage =new Homepage(testdriver);
 		
+	}
+	public void getLoginpage() {
+		loginpage=new Login_page(testdriver);
+	}
+	public void getorangeHRMhomepage() {
+		orangeHRMhomepage=new OrangeHRM_Home_page(testdriver);
+	}
+	public void getOrangeHRM_SystemUsers_page() {
+		orangeHRMSystemUsers_page=new OrangeHRM_SystemUsers_page(testdriver);
+	}
+	public void getAdd_user_page() {
+		add_user_page=new Add_user_page(testdriver);
 	}
 	
 	public static void logScreenshot(String stepName, String screenshotStatus){		

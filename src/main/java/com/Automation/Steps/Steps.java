@@ -31,6 +31,10 @@ public class Steps extends Mastersteps{
 		ExtentUtilities.createParentTest(scenario.getName());
 		startDriver();
 		getHomepage();
+		getLoginpage();
+		getorangeHRMhomepage();
+		getOrangeHRM_SystemUsers_page();
+		getAdd_user_page();
 	
 
 	}
