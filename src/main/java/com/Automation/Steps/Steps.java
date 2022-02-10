@@ -55,6 +55,40 @@ public class Steps extends Mastersteps{
 	    // Write code here that turns the phrase above into concrete actions
 	    throw new io.cucumber.java.PendingException();
 	}
+	@Given("verify orangeHRM login")
+	public void verify_orange_hrm_login() {
+	  loginpage.orangeHRM_Login("Admin", "admin123");
+	}
 
-//steps
+	@Then("navigate to systemUsers")
+	public void navigate_to_system_users() {
+	    orangeHRMhomepage.navigateTo_UsersLink();
+	}
+	@Then("navigate to My Info link")
+	public void navigate_to_my_info_link() {
+	   orangeHRMhomepage.navigateTo_Myinfo_link();
+	}
+	@Then("navigate to Trackers link")
+	public void navigate_to_trackers_link() {
+	   orangeHRMhomepage.navigate_to_My_Trackers();
+	}
+	@Then("navigate to  EmployeeTimeSheet  link")
+	public void navigate_to_employee_time_sheet_link() {
+	    orangeHRMhomepage.navigateToEmployeeTimesheetsLink();
+	}
+	@Then("navigate to ReportingMethodsLink")
+	public void navigate_to_reporting_methods_link() {
+	   orangeHRMhomepage.navigateTo_ReportingMethodsLink();
+	}
+	@Then("click on add button and navigate to add user page")
+	public void click_on_add_button_and_navigate_to_add_user_page() {
+	   orangeHRMSystemUsers_page.ClickOnAddButton();
+	   
+	}
+	@Then("enter the details and click on save button")
+	public void enter_the_details_and_click_on_save_button() {
+	   add_user_page.enter_AddUser_details("ESS", "Akshay", "kumar", "Enabled","asdf","asdf");
+	   add_user_page.click_Save_btn();
+	}
+
 }
